@@ -36,7 +36,7 @@ module AutoHtmlFor
         end
         define_method("auto_html_prepare_#{raw_attr}") do
           self.send(raw_attr.to_s + suffix + "=", 
-            auto_html(self.send(raw_attr), &proc))
+            auto_html(self.send(raw_attr), self, &proc))
         end
       end
     end
