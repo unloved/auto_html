@@ -10,12 +10,20 @@ module AutoHtml
       @block = block
     end
 
-    def apply(text, options = {})
+    def apply(text, options = {}, object = nil)
       _options = @options && @options.merge(options)
-      if _options
-        @block.call(text.to_s.dup, _options)
+      if object
+        if _options
+          object.instance_exec text.to_s.dup, _options, &@block
+        else
+          object.instance_exec text.to_s.dup, &@block
+        end
       else
-        @block.call(text.to_s.dup)
+        if _options
+          @block.call(text.to_s.dup, _options)
+        else
+          @block.call(text.to_s.dup)
+        end
       end
     end
   end
