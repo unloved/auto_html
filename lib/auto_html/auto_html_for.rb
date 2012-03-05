@@ -11,7 +11,7 @@ module AutoHtmlFor
   end
 
   module ClassMethods
-    def auto_html_for(raw_attrs, &proc)
+    def auto_html_for(raw_attrs, options = {}, &proc)
       include AutoHtmlFor::InstanceMethods
       before_save :auto_html_prepare
 
@@ -36,7 +36,7 @@ module AutoHtmlFor
               result
         end
         define_method("auto_html_prepare_#{raw_attr}") do
-          result = auto_html(self.send(raw_attr), &proc)
+          result = auto_html(self.send(raw_attr), options, self, &proc))
           self.send(raw_attr.to_s + suffix + "=", result)
           result
         end
